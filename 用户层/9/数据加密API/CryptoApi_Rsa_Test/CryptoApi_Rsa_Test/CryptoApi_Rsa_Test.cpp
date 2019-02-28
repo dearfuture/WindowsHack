@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include <Windows.h>
+#include <WinError.h>
 
 
 void ShowError(char *pszText)
@@ -15,10 +16,107 @@ void ShowError(char *pszText)
 }
 
 
+// 保存数据到本地文件
+BOOL SaveDataToFile(char *pszFileName, PVOID pData, DWORD dwDataLength)
+{
+	BOOL bRet = FALSE;
+	HANDLE hFile = NULL;
+	DWORD dwFileSize = 0;
+	DWORD dwRet = 0;
+
+	do
+	{
+		hFile = ::CreateFile(pszFileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (INVALID_HANDLE_VALUE == hFile)
+		{
+			break;
+		}
+
+		::WriteFile(hFile, pData, dwDataLength, &dwRet, NULL);
+		if (dwRet != dwDataLength)
+		{
+			break;
+		}
+
+		bRet = TRUE;
+
+	} while (FALSE);
+
+	if (NULL != hFile)
+	{
+		::CloseHandle(hFile);
+		hFile = NULL;
+	}
+
+	return bRet;
+}
+
+
+// 读取文件数据
+BOOL ReadDataFromFile(char *pszFileName, BYTE **ppData, DWORD *pdwDataLength)
+{
+	BOOL bRet = FALSE;
+	HANDLE hFile = NULL;
+	DWORD dwFileSize = 0;
+	DWORD dwRet = 0;
+	BYTE *pData = NULL;
+	DWORD dwDataLength = 0;
+
+	do
+	{
+		hFile = ::CreateFile(pszFileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (INVALID_HANDLE_VALUE == hFile)
+		{
+			break;
+		}
+
+		dwDataLength = ::GetFileSize(hFile, NULL);
+
+		pData = new BYTE[dwDataLength];
+		if (NULL == pData)
+		{
+			break;
+		}
+		::RtlZeroMemory(pData, dwDataLength);
+
+		::ReadFile(hFile, pData, dwDataLength, &dwRet, NULL);
+		if (dwRet != dwDataLength)
+		{
+			break;
+		}
+
+		// 返回数据
+		*ppData = pData;
+		*pdwDataLength = dwDataLength;
+
+		bRet = TRUE;
+
+	} while (FALSE);
+
+	if (FALSE == bRet)
+	{
+		if (NULL != pData)
+		{
+			delete []pData;
+			pData = NULL;
+		}
+	}
+
+	if (NULL != hFile)
+	{
+		::CloseHandle(hFile);
+		hFile = NULL;
+	}
+
+	return bRet;
+}
+
+
+
 // 生成公钥和私钥
 BOOL GenerateKey(BYTE **ppPublicKey, DWORD *pdwPublicKeyLength, BYTE **ppPrivateKey, DWORD *pdwPrivateKeyLength)
 {
-	BOOL bRet = TRUE;
+	BOOL bRet = FALSE;
 	HCRYPTPROV hCryptProv = NULL;
 	HCRYPTKEY hCryptKey = NULL;
 	BYTE *pPublicKey = NULL;
@@ -30,10 +128,14 @@ BOOL GenerateKey(BYTE **ppPublicKey, DWORD *pdwPublicKeyLength, BYTE **ppPrivate
 	{
 		// 获取CSP句柄
 		bRet = ::CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, 0);
-		if (FALSE == bRet)
+		if (NTE_BAD_KEYSET == ::GetLastError())
 		{
-			ShowError("CryptAcquireContext");
-			break;
+			bRet = ::CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_NEWKEYSET);
+			if (FALSE == bRet)
+			{
+				ShowError("CryptAcquireContext");
+				break;
+			}
 		}
 
 		// 生成公私密钥对
@@ -101,7 +203,7 @@ BOOL GenerateKey(BYTE **ppPublicKey, DWORD *pdwPublicKeyLength, BYTE **ppPrivate
 // 公钥加密数据
 BOOL RsaEncrypt(BYTE *pPublicKey, DWORD dwPublicKeyLength, BYTE *pData, DWORD &dwDataLength, DWORD dwBufferLength)
 {
-	BOOL bRet = TRUE;
+	BOOL bRet = FALSE;
 	HCRYPTPROV hCryptProv = NULL;
 	HCRYPTKEY hCryptKey = NULL;
 
@@ -109,10 +211,14 @@ BOOL RsaEncrypt(BYTE *pPublicKey, DWORD dwPublicKeyLength, BYTE *pData, DWORD &d
 	{
 		// 获取CSP句柄
 		bRet = ::CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, 0);
-		if (FALSE == bRet)
+		if (NTE_BAD_KEYSET == ::GetLastError())
 		{
-			ShowError("CryptAcquireContext");
-			break;
+			bRet = ::CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_NEWKEYSET);
+			if (FALSE == bRet)
+			{
+				ShowError("CryptAcquireContext");
+				break;
+			}
 		}
 
 		// 导入公钥
@@ -150,7 +256,7 @@ BOOL RsaEncrypt(BYTE *pPublicKey, DWORD dwPublicKeyLength, BYTE *pData, DWORD &d
 // 私钥解密数据
 BOOL RsaDecrypt(BYTE *pPrivateKey, DWORD dwProvateKeyLength, BYTE *pData, DWORD &dwDataLength)
 {
-	BOOL bRet = TRUE;
+	BOOL bRet = FALSE;
 	HCRYPTPROV hCryptProv = NULL;
 	HCRYPTKEY hCryptKey = NULL;
 
@@ -158,10 +264,14 @@ BOOL RsaDecrypt(BYTE *pPrivateKey, DWORD dwProvateKeyLength, BYTE *pData, DWORD 
 	{
 		// 获取CSP句柄
 		bRet = ::CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, 0);
-		if (FALSE == bRet)
+		if (NTE_BAD_KEYSET == ::GetLastError())
 		{
-			ShowError("CryptAcquireContext");
-			break;
+			bRet = ::CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_NEWKEYSET);
+			if (FALSE == bRet)
+			{
+				ShowError("CryptAcquireContext");
+				break;
+			}
 		}
 
 		// 导入私钥
@@ -199,62 +309,128 @@ BOOL RsaDecrypt(BYTE *pPrivateKey, DWORD dwProvateKeyLength, BYTE *pData, DWORD 
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	int n = 0;
+	BOOL bRet = FALSE;
 	BYTE *pPublicKey = NULL;
 	DWORD dwPublicKeyLength = 0;
 	BYTE *pPrivateKey = NULL;
 	DWORD dwPrivateKeyLength = 0;
 	BYTE *pData = NULL;
-	DWORD dwDataLength = 0;
+	DWORD dwTextLength = 0;
+	DWORD dwDataLength = 4096;
 	DWORD dwBufferLength = 4096;
 	DWORD i = 0;
 
-	pData = new BYTE[dwBufferLength];
-	if (NULL == pData)
-	{
-		return 1;
-	}
-	::RtlZeroMemory(pData, dwBufferLength);
-	::lstrcpy((char *)pData, "What is your name? DemonGan");
-	dwDataLength = 1 + ::lstrlen((char *)pData);
-	printf("Text[%d]\n", dwDataLength);
-	for (i = 0; i < dwDataLength; i++)
-	{
-		printf("%x", pData[i]);
-	}
-	printf("\n\n");
+	char szFileName[MAX_PATH] = { 0 };
+	pData = new BYTE[dwDataLength];
 
-	// 生成公钥和私钥
-	GenerateKey(&pPublicKey, &dwPublicKeyLength, &pPrivateKey, &dwPrivateKeyLength);
-	printf("Public Key[%d]\n", dwPublicKeyLength);
-	for (i = 0; i < dwPublicKeyLength; i++)
-	{
-		printf("%.2x", pPublicKey[i]);
-	}
-	printf("\n");
-	printf("Private Key[%d]\n", dwPrivateKeyLength);
-	for (i = 0; i < dwPrivateKeyLength; i++)
-	{
-		printf("%.2x", pPrivateKey[i]);
-	}
-	printf("\n\n");
+	::RtlZeroMemory(pData, dwDataLength);
+	::RtlZeroMemory(szFileName, MAX_PATH);
 
-	// 公钥加密
-	RsaEncrypt(pPublicKey, dwPublicKeyLength, pData, dwDataLength, dwBufferLength);
-	printf("RSA Encrypt[%d]\n", dwDataLength);
-	for (i = 0; i < dwDataLength; i++)
-	{
-		printf("%x", pData[i]);
-	}
-	printf("\n\n");
 
-	// 私钥解密
-	RsaDecrypt(pPrivateKey, dwPrivateKeyLength, pData, dwDataLength);
-	printf("RSA Decrypt[%d]\n", dwDataLength);
-	for (i = 0; i < dwDataLength; i++)
+	do
 	{
-		printf("%x", pData[i]);
-	}
-	printf("\n\n");
+		printf("----------------- Win32 Crypto Api Test -----------------\n");
+		printf("1. 生成公私密钥对, 并保存到本地文件\n");
+		printf("2. 公钥加密数据\n");
+		printf("3. 私钥解密数据\n");
+		printf("---------------------------------------------------------\n");
+
+		scanf("%d", &n);
+		getchar();
+
+		switch (n)
+		{
+		case 1:
+		{
+			// 生成公钥和私钥
+			bRet = GenerateKey(&pPublicKey, &dwPublicKeyLength, &pPrivateKey, &dwPrivateKeyLength);
+			if (FALSE == bRet)
+			{
+				exit(0);
+				break;
+			}
+			SaveDataToFile("public.enc", pPublicKey, dwPublicKeyLength);
+			SaveDataToFile("private.enc", pPrivateKey, dwPrivateKeyLength);
+
+			break;
+		}
+		case 2:
+		{
+			::RtlZeroMemory(pData, dwDataLength);
+			::RtlZeroMemory(szFileName, MAX_PATH);
+
+			printf("输入要加密的字符串:\n");
+			gets((char *)pData);
+
+			printf("输入公钥文件路径:\n");
+			gets(szFileName);
+			bRet = ReadDataFromFile(szFileName, &pPublicKey, &dwPublicKeyLength);
+			if (FALSE == bRet)
+			{
+				exit(0);
+				break;
+			}
+
+			// 加密
+			dwTextLength = 1 + ::lstrlen((char *)pData);
+			bRet = RsaEncrypt(pPublicKey, dwPublicKeyLength, pData, dwTextLength, dwBufferLength);
+			if (FALSE == bRet)
+			{
+				exit(0);
+				break;
+			}
+
+			// 保存密文到文件
+			SaveDataToFile("encdata.enc", pData, dwTextLength);
+
+			break;
+		}
+		case 3:
+		{
+			::RtlZeroMemory(pData, dwDataLength);
+			::RtlZeroMemory(szFileName, MAX_PATH);
+
+			printf("输入密文路径:\n");
+			gets(szFileName);
+			bRet = ReadDataFromFile(szFileName, &pData, &dwTextLength);
+			if (FALSE == bRet)
+			{
+				exit(0);
+				break;
+			}
+
+			printf("输入私钥文件路径:\n");
+			gets(szFileName);
+			bRet = ReadDataFromFile(szFileName, &pPrivateKey, &dwPrivateKeyLength);
+			if (FALSE == bRet)
+			{
+				exit(0);
+				break;
+			}
+
+			bRet = RsaDecrypt(pPrivateKey, dwPrivateKeyLength, pData, dwTextLength);
+			if (FALSE == bRet)
+			{
+				exit(0);
+				break;
+			}
+
+			// 显示
+			printf("解密结果为:\n");
+			printf("%s", (char *)pData);
+			printf("\n\n\n\n");
+
+			break;
+		}
+		default:
+		{
+			printf("input error!\n");
+			break;
+		}
+		}
+		
+	} while (0 != n);
 
 	// 释放
 	if (pData)

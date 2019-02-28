@@ -218,7 +218,7 @@ BOOL HandleAttribute_A0(HANDLE hFile, BYTE *lpBuffer, WORD wSizeOfSector, BYTE b
 {
 	// 读取Data Run List，去到索引处INDX遍历UNICODE，获取文件号
 	DWORD dwCount = 0;
-	DWORD dwClusterOffet = 0;
+	LONGLONG llClusterOffet = 0;
 	// 获取索引号的偏移
 	WORD wIndxOffset = MAKEWORD(lpBuffer[wAttributeOffset + 0x20], lpBuffer[wAttributeOffset + 0x21]);
 	// 读取Data Run List
@@ -240,14 +240,47 @@ BOOL HandleAttribute_A0(HANDLE hFile, BYTE *lpBuffer, WORD wSizeOfSector, BYTE b
 			liDataRunSize.QuadPart = liDataRunSize.QuadPart << 8;
 			liDataRunSize.QuadPart = liDataRunSize.QuadPart | lpBuffer[wAttributeOffset + wIndxOffset + dwCount + i];
 		}
-		for (DWORD i = bHi; i > 0; i--)
+
+		if (0 == llClusterOffet)
 		{
-			liDataRunOffset.QuadPart = liDataRunOffset.QuadPart << 8;
-			liDataRunOffset.QuadPart = liDataRunOffset.QuadPart | lpBuffer[wAttributeOffset + wIndxOffset + dwCount + bLo + i];
+			// 第一个Data Run
+			for (DWORD i = bHi; i > 0; i--)
+			{
+				liDataRunOffset.QuadPart = liDataRunOffset.QuadPart << 8;
+				liDataRunOffset.QuadPart = liDataRunOffset.QuadPart | lpBuffer[wAttributeOffset + wIndxOffset + dwCount + bLo + i];
+			}
 		}
-		// 注意加上上一个Data Run的逻辑簇号
-		liDataRunOffset.QuadPart = liDataRunOffset.QuadPart + dwClusterOffet;
-		dwClusterOffet = dwClusterOffet + liDataRunOffset.LowPart;
+		else
+		{
+			// 第二个及多个Data Run
+
+			// 判断正负
+			if (0 != (0x80 & lpBuffer[wAttributeOffset + wIndxOffset + dwCount + bLo + bHi]))
+			{
+				// 负整数
+				for (DWORD i = bHi; i > 0; i--)
+				{
+					// 补码的原码=反码+1
+					liDataRunOffset.QuadPart = liDataRunOffset.QuadPart << 8;
+					liDataRunOffset.QuadPart = liDataRunOffset.QuadPart | (BYTE)(~lpBuffer[wAttributeOffset + wIndxOffset + dwCount + bLo + i]);
+				}
+				liDataRunOffset.QuadPart = liDataRunOffset.QuadPart + 1;
+				liDataRunOffset.QuadPart = 0 - liDataRunOffset.QuadPart;
+			}
+			else
+			{
+				// 正整数
+				for (DWORD i = bHi; i > 0; i--)
+				{
+					liDataRunOffset.QuadPart = liDataRunOffset.QuadPart << 8;
+					liDataRunOffset.QuadPart = liDataRunOffset.QuadPart | lpBuffer[wAttributeOffset + wIndxOffset + dwCount + bLo + i];
+				}
+			}
+		}
+
+		// 注意加上上一个Data Run的逻辑簇号(第二个Data Run可能是正整数、也可能是负整数(补码表示), 可以根据最高位是否为1来判断, 若为1, 则是负整数, 否则是正整数)
+		liDataRunOffset.QuadPart = llClusterOffet + liDataRunOffset.QuadPart;
+		llClusterOffet = liDataRunOffset.QuadPart;
 
 		// 去到索引处INDX遍历UNICODE，获取文件号
 		LARGE_INTEGER liIndxOffset, liIndxSize;
@@ -367,7 +400,7 @@ BOOL FileContentOffset(HANDLE hFile, WORD wSizeOfSector, BYTE bSizeOfCluster, LA
 			{
 				// 读取偏移0x20出2字节，即是数据运行列表偏移
 				DWORD dwCount = 0;
-				DWORD dwClusterOffet = 0;
+				LONGLONG llClusterOffet = 0;
 				// 获取索引号的偏移
 				WORD wIndxOffset = MAKEWORD(bBuffer[wAttributeOffset + 0x20], bBuffer[wAttributeOffset + 0x21]);
 				// 读取Data Run List
@@ -389,15 +422,46 @@ BOOL FileContentOffset(HANDLE hFile, WORD wSizeOfSector, BYTE bSizeOfCluster, LA
 						liDataRunSize.QuadPart = liDataRunSize.QuadPart << 8;
 						liDataRunSize.QuadPart = liDataRunSize.QuadPart | bBuffer[wAttributeOffset + wIndxOffset + dwCount + i];
 					}
-					for (DWORD i = bHi; i > 0; i--)
+					if (0 == llClusterOffet)
 					{
-						liDataRunOffset.QuadPart = liDataRunOffset.QuadPart << 8;
-						liDataRunOffset.QuadPart = liDataRunOffset.QuadPart | bBuffer[wAttributeOffset + wIndxOffset + dwCount + bLo + i];
+						// 第一个Data Run
+						for (DWORD i = bHi; i > 0; i--)
+						{
+							liDataRunOffset.QuadPart = liDataRunOffset.QuadPart << 8;
+							liDataRunOffset.QuadPart = liDataRunOffset.QuadPart | bBuffer[wAttributeOffset + wIndxOffset + dwCount + bLo + i];
+						}
 					}
-					// 注意加上上一个Data Run的逻辑簇号
-					liDataRunOffset.QuadPart = liDataRunOffset.QuadPart + dwClusterOffet;
-					dwClusterOffet = dwClusterOffet + liDataRunOffset.LowPart;
+					else
+					{
+						// 第二个及多个Data Run
 
+						// 判断正负
+						if (0 != (0x80 & bBuffer[wAttributeOffset + wIndxOffset + dwCount + bLo + bHi]))
+						{
+							// 负整数
+							for (DWORD i = bHi; i > 0; i--)
+							{
+								// 补码的原码=反码+1
+								liDataRunOffset.QuadPart = liDataRunOffset.QuadPart << 8;
+								liDataRunOffset.QuadPart = liDataRunOffset.QuadPart | (BYTE)(~bBuffer[wAttributeOffset + wIndxOffset + dwCount + bLo + i]);
+							}
+							liDataRunOffset.QuadPart = liDataRunOffset.QuadPart + 1;
+							liDataRunOffset.QuadPart = 0 - liDataRunOffset.QuadPart;
+						}
+						else
+						{
+							// 正整数
+							for (DWORD i = bHi; i > 0; i--)
+							{
+								liDataRunOffset.QuadPart = liDataRunOffset.QuadPart << 8;
+								liDataRunOffset.QuadPart = liDataRunOffset.QuadPart | bBuffer[wAttributeOffset + wIndxOffset + dwCount + bLo + i];
+							}
+						}
+					}
+					
+					// 注意加上上一个Data Run的逻辑簇号(第二个Data Run可能是正整数、也可能是负整数(补码表示), 可以根据最高位是否为1来判断, 若为1, 则是负整数, 否则是正整数)
+					liDataRunOffset.QuadPart = llClusterOffet + liDataRunOffset.QuadPart;
+					llClusterOffet = liDataRunOffset.QuadPart;
 					// 显示逻辑簇号和大小
 					liContenOffset.QuadPart = liDataRunOffset.QuadPart*wSizeOfSector*bSizeOfCluster;
 					printf("File Content Offset:0x%llx\nFile Content Size:0x%llx\n", liContenOffset.QuadPart, (liDataRunSize.QuadPart*wSizeOfSector*bSizeOfCluster));
