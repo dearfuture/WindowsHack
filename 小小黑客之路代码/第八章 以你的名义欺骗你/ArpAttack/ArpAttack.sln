@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ArpAttack", "ArpAttack\ArpAttack.vcproj", "{CD120C6F-EB47-4979-A58A-5E85D7A1768E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD120C6F-EB47-4979-A58A-5E85D7A1768E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CD120C6F-EB47-4979-A58A-5E85D7A1768E}.Debug|Win32.Build.0 = Debug|Win32
+		{CD120C6F-EB47-4979-A58A-5E85D7A1768E}.Release|Win32.ActiveCfg = Release|Win32
+		{CD120C6F-EB47-4979-A58A-5E85D7A1768E}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

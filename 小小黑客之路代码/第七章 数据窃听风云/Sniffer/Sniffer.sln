@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sniffer", "Sniffer\Sniffer.vcproj", "{BABC42BF-5B0E-4268-BC09-D72B31DEA923}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BABC42BF-5B0E-4268-BC09-D72B31DEA923}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BABC42BF-5B0E-4268-BC09-D72B31DEA923}.Debug|Win32.Build.0 = Debug|Win32
+		{BABC42BF-5B0E-4268-BC09-D72B31DEA923}.Release|Win32.ActiveCfg = Release|Win32
+		{BABC42BF-5B0E-4268-BC09-D72B31DEA923}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

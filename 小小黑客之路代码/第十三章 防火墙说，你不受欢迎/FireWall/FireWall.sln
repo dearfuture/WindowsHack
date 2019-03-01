@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FireWall", "FireWall\FireWall.vcproj", "{BE891318-AF0E-47DF-8E06-56F330A3B577}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FireWallDll", "FireWallDll\FireWallDll.vcproj", "{7C0CBCF0-0D2E-4987-9FD3-BEC86A8F2887}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE891318-AF0E-47DF-8E06-56F330A3B577}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BE891318-AF0E-47DF-8E06-56F330A3B577}.Debug|Win32.Build.0 = Debug|Win32
+		{BE891318-AF0E-47DF-8E06-56F330A3B577}.Release|Win32.ActiveCfg = Release|Win32
+		{BE891318-AF0E-47DF-8E06-56F330A3B577}.Release|Win32.Build.0 = Release|Win32
+		{7C0CBCF0-0D2E-4987-9FD3-BEC86A8F2887}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7C0CBCF0-0D2E-4987-9FD3-BEC86A8F2887}.Debug|Win32.Build.0 = Debug|Win32
+		{7C0CBCF0-0D2E-4987-9FD3-BEC86A8F2887}.Release|Win32.ActiveCfg = Release|Win32
+		{7C0CBCF0-0D2E-4987-9FD3-BEC86A8F2887}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+/////////////////////////////////////////////////////
+//主函数
+/////////////////////////////////////////////////////
+int main()
+{
+	char str[] = "哥 是 犀 利 的 黑 客!";
+	cout<<str<<endl<<endl;
+
+	system("pause");
+	return 0;
+}
