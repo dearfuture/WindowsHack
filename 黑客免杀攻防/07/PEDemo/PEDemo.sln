@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PEDemo", "PEDemo\PEDemo.vcproj", "{FD5DF439-5409-4B1C-9C28-CD58FDEFF6B6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD5DF439-5409-4B1C-9C28-CD58FDEFF6B6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FD5DF439-5409-4B1C-9C28-CD58FDEFF6B6}.Debug|Win32.Build.0 = Debug|Win32
+		{FD5DF439-5409-4B1C-9C28-CD58FDEFF6B6}.Release|Win32.ActiveCfg = Release|Win32
+		{FD5DF439-5409-4B1C-9C28-CD58FDEFF6B6}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProtectFile", "ProtectFile\ProtectFile.vcxproj", "{477B69FC-CA3E-4F89-B0BA-5F553C03B2E1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "R3_Rootkit", "R3_Rootkit\R3_Rootkit.vcxproj", "{79222BA2-3095-42A9-8DFB-77732F566AFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{477B69FC-CA3E-4F89-B0BA-5F553C03B2E1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{477B69FC-CA3E-4F89-B0BA-5F553C03B2E1}.Debug|Win32.Build.0 = Debug|Win32
+		{477B69FC-CA3E-4F89-B0BA-5F553C03B2E1}.Debug|Win32.Deploy.0 = Debug|Win32
+		{477B69FC-CA3E-4F89-B0BA-5F553C03B2E1}.Release|Win32.ActiveCfg = Release|Win32
+		{477B69FC-CA3E-4F89-B0BA-5F553C03B2E1}.Release|Win32.Build.0 = Release|Win32
+		{477B69FC-CA3E-4F89-B0BA-5F553C03B2E1}.Release|Win32.Deploy.0 = Release|Win32
+		{79222BA2-3095-42A9-8DFB-77732F566AFF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{79222BA2-3095-42A9-8DFB-77732F566AFF}.Debug|Win32.Build.0 = Debug|Win32
+		{79222BA2-3095-42A9-8DFB-77732F566AFF}.Debug|Win32.Deploy.0 = Debug|Win32
+		{79222BA2-3095-42A9-8DFB-77732F566AFF}.Release|Win32.ActiveCfg = Release|Win32
+		{79222BA2-3095-42A9-8DFB-77732F566AFF}.Release|Win32.Build.0 = Release|Win32
+		{79222BA2-3095-42A9-8DFB-77732F566AFF}.Release|Win32.Deploy.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,42 @@
+﻿生成启动时间为 2012/11/2 20:13:19。
+     1>项目“D:\Writing\新建文件夹\MyFirstDriver\MyFirstDriver Package\MyFirstDriver Package.vcxproj”在节点 2 上(Build 个目标)。
+     1>InitializeBuildStatus:
+         正在创建“Win7Debug\MyFirstDriver Package.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       DriverPackageTarget:
+         Packaging up the following projects for the following configurations:
+         
+         ..\MyFirstDriver\MyFirstDriver.vcxproj Configuration='Win7 Debug' Platform='Win32'
+         
+         Passing non-device INF
+         
+         The following files will be packaged:
+         
+         File to package:      D:\Writing\新建文件夹\MyFirstDriver\Win7Debug\MyFirstDriver.sys.
+         Location in Package:  \MyFirstDriver.sys.
+         Requested by project: D:\Writing\新建文件夹\MyFirstDriver\MyFirstDriver\MyFirstDriver.vcxproj
+         
+         
+         File to package:      D:\Writing\新建文件夹\MyFirstDriver\MyFirstDriver\Win7Debug\MyFirstDriver.inf.
+         Location in Package:  \MyFirstDriver.inf.
+         Requested by project: D:\Writing\新建文件夹\MyFirstDriver\MyFirstDriver\MyFirstDriver.vcxproj
+         
+         
+         正在创建目录“D:\Writing\新建文件夹\MyFirstDriver\Win7Debug\MyFirstDriver Package”。
+         正在将文件从“D:\Writing\新建文件夹\MyFirstDriver\Win7Debug\MyFirstDriver.sys”复制到“D:\Writing\新建文件夹\MyFirstDriver\Win7Debug\MyFirstDriver Package\MyFirstDriver.sys”。
+         正在将文件从“D:\Writing\新建文件夹\MyFirstDriver\MyFirstDriver\Win7Debug\MyFirstDriver.inf”复制到“D:\Writing\新建文件夹\MyFirstDriver\Win7Debug\MyFirstDriver Package\MyFirstDriver.inf”。
+       Inf2Cat:
+         C:\Program Files (x86)\Windows Kits\8.0\bin\x86\inf2cat.exe /os:7_x86 /driver:"D:\Writing\新建文件夹\MyFirstDriver\Win7Debug\MyFirstDriver Package" 
+         .....................
+         Signability test failed.
+         
+         Errors:
+         22.9.4: Bad file name for catalogfile from [Version] section in \myfirstdriver.inf
+         
+         Warnings:
+         None
+     1>Win7Debug\inf2catOutput.log : Inf2Cat error -2: "Inf2Cat, signability test failed." Double click to see the tool output.
+     1>已完成生成项目“D:\Writing\新建文件夹\MyFirstDriver\MyFirstDriver Package\MyFirstDriver Package.vcxproj”(Build 个目标)的操作 - 失败。
+
+生成失败。
+
+已用时间 00:00:05.50

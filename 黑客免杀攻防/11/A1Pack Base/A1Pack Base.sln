@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A1Pack Base", "A1Pack Base\A1Pack Base.vcxproj", "{1DE5E3BB-453F-4AC5-9D90-FFD2A2E6D0FA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A1Pack_Base", "A1Pack_Base\A1Pack_Base.vcxproj", "{FFEFB1D2-AEC4-424F-BE46-452EB5DDE1ED}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Stub", "Stub\Stub.vcxproj", "{9F952BE6-4FCA-44D7-BDB2-64DCA518E6F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1DE5E3BB-453F-4AC5-9D90-FFD2A2E6D0FA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1DE5E3BB-453F-4AC5-9D90-FFD2A2E6D0FA}.Debug|Win32.Build.0 = Debug|Win32
+		{1DE5E3BB-453F-4AC5-9D90-FFD2A2E6D0FA}.Release|Win32.ActiveCfg = Release|Win32
+		{1DE5E3BB-453F-4AC5-9D90-FFD2A2E6D0FA}.Release|Win32.Build.0 = Release|Win32
+		{FFEFB1D2-AEC4-424F-BE46-452EB5DDE1ED}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FFEFB1D2-AEC4-424F-BE46-452EB5DDE1ED}.Debug|Win32.Build.0 = Debug|Win32
+		{FFEFB1D2-AEC4-424F-BE46-452EB5DDE1ED}.Release|Win32.ActiveCfg = Release|Win32
+		{FFEFB1D2-AEC4-424F-BE46-452EB5DDE1ED}.Release|Win32.Build.0 = Release|Win32
+		{9F952BE6-4FCA-44D7-BDB2-64DCA518E6F0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9F952BE6-4FCA-44D7-BDB2-64DCA518E6F0}.Debug|Win32.Build.0 = Debug|Win32
+		{9F952BE6-4FCA-44D7-BDB2-64DCA518E6F0}.Release|Win32.ActiveCfg = Release|Win32
+		{9F952BE6-4FCA-44D7-BDB2-64DCA518E6F0}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

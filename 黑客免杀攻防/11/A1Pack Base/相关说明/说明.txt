@@ -1,0 +1,12 @@
+
+== 关于项目 ==
+    此项目是使用微软Visual Studio 2010创建的，如果想要编译此项目，请下载相关工具。以下
+是微软官方提供的Visual Studio 2010 Express（学习版）下载页面，这个版本拥有所有必要的基
+本功能，但它是免费的。
+
+http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-cpp-express
+
+
+== 关于样本 ==
+    “测试样本”目录下存放着由各种语言编写的应用程序，这些程序都使用了一些不同的PE文件
+特性，可以作为测试加壳程序兼容性的样本。
